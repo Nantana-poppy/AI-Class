@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
 import {
   mockWeeklyTarget,
   mockKpis,
@@ -11,9 +13,17 @@ import {
 } from "@/lib/mock-data";
 
 export default function DashboardPage() {
+  const router = useRouter();
+  const { data: session, isPending } = authClient.useSession();
   const [completedTaskIds, setCompletedTaskIds] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState<"all" | "morning" | "afternoon">("all");
   const [summarySent, setSummarySent] = useState(false);
+
+  useEffect(() => {
+    if (!isPending && !session) {
+      router.push("/sign-up");
+    }
+  }, [session, isPending, router]);
 
   const toggleTaskCompletion = (id: string) => {
     setCompletedTaskIds((prev) =>
@@ -49,7 +59,7 @@ export default function DashboardPage() {
             </span>
           </div>
           <p className="text-[14px] text-slate-500 dark:text-slate-400">
-            สวัสดีครับ, คุณวีรภัทร 👋 ภาพรวมและรายการติดตามลูกค้าประจำวันนี้ พร้อมดำเนินการต่อได้ทันที
+            สวัสดีครับ, คุณ{session?.user?.name || "ผู้ใช้งาน"} 👋 ภาพรวมและรายการติดตามลูกค้าประจำวันนี้ พร้อมดำเนินการต่อได้ทันที
           </p>
         </div>
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   Contact,
   ContactStatus,
@@ -8,6 +9,7 @@ import {
 } from "@/lib/contacts-data";
 
 export default function ContactsPage() {
+  const router = useRouter();
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -30,6 +32,9 @@ export default function ContactsPage() {
           }
         } else {
           console.error("Failed to fetch contacts, status:", res.status);
+          if (res.status === 401 && isMounted) {
+            router.push("/sign-up");
+          }
         }
       } catch (err) {
         console.error("Failed to fetch contacts:", err);
@@ -45,7 +50,7 @@ export default function ContactsPage() {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [router]);
 
   // Modal states
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
