@@ -32,9 +32,6 @@ export default function ContactsPage() {
           }
         } else {
           console.error("Failed to fetch contacts, status:", res.status);
-          if (res.status === 401 && isMounted) {
-            router.push("/sign-up");
-          }
         }
       } catch (err) {
         console.error("Failed to fetch contacts:", err);
@@ -163,8 +160,8 @@ export default function ContactsPage() {
   // Save Form (Create or Update via Supabase Database)
   const handleSaveContact = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.company || !formData.phone || !formData.email) {
-      alert("กรุณากรอกข้อมูลที่จำเป็น (ชื่อ, บริษัท, อีเมล, เบอร์โทรศัพท์)");
+    if (!formData.name || !formData.company || !formData.phone) {
+      alert("กรุณากรอกข้อมูลที่จำเป็น (ชื่อ, บริษัท, เบอร์โทรศัพท์)");
       return;
     }
 

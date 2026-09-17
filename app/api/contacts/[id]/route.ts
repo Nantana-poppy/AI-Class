@@ -19,7 +19,6 @@ export async function PUT(
     const { id } = await props.params;
     const body = await request.json();
 
-    // Verify contact belongs to this user
     const existing = await prisma.contact.findFirst({
       where: {
         id,
@@ -82,7 +81,6 @@ export async function DELETE(
 
     const { id } = await props.params;
 
-    // Verify contact belongs to this user
     const existing = await prisma.contact.findFirst({
       where: {
         id,

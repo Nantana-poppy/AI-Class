@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import {
@@ -13,17 +12,10 @@ import {
 } from "@/lib/mock-data";
 
 export default function DashboardPage() {
-  const router = useRouter();
-  const { data: session, isPending } = authClient.useSession();
+  const { data: session } = authClient.useSession();
   const [completedTaskIds, setCompletedTaskIds] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState<"all" | "morning" | "afternoon">("all");
   const [summarySent, setSummarySent] = useState(false);
-
-  useEffect(() => {
-    if (!isPending && !session) {
-      router.push("/sign-up");
-    }
-  }, [session, isPending, router]);
 
   const toggleTaskCompletion = (id: string) => {
     setCompletedTaskIds((prev) =>

@@ -44,9 +44,9 @@ export async function POST(request: Request) {
 
     const body = await request.json();
 
-    if (!body.name || !body.company || !body.email || !body.phone) {
+    if (!body.name || !body.company || !body.phone) {
       return NextResponse.json(
-        { error: "กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน" },
+        { error: "กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน (ชื่อ, บริษัท, เบอร์โทรศัพท์)" },
         { status: 400 }
       );
     }
@@ -58,7 +58,7 @@ export async function POST(request: Request) {
         englishName: body.englishName || null,
         company: body.company,
         position: body.position || null,
-        email: body.email,
+        email: body.email || "",
         phone: body.phone,
         lineId: body.lineId || null,
         channel: body.channel || "โทรศัพท์",
